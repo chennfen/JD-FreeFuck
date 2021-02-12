@@ -1,4 +1,15 @@
 #!/bin/bash
+## Author:SuperManito
+## Modified:2021-2-8
+
+## 一键更新脚本：
+function AutoScript() {
+  touch manual-update.sh
+  cat >manual-update.sh <<\EOF
+#!/bin/bash
+## 项目安装目录
+BASE=""
+
 ## 执行更新命令
 bash git_pull.sh
 ## 重新生成一键执行所有活动脚本
@@ -17,3 +28,10 @@ if [ $? -eq 0 ];then
   echo "bash jd.sh jd_crazy_joy_coin now" >>run-all.sh
 fi
 sed -i '/^\s*$/d' run-all.sh
+## 配置定时任务
+sed -i "s#/home/myid/jd#$BASE#g" $BASE/config/crontab.list
+EOF
+  echo -e '\033[32m请在此文件内容中定义您项目的安装目录，并将此文件移动到项目所在目录。 \033[0m'
+  echo -e '\033[32m执行此一键更新脚本后会自动生成一键执行所有活动脚本。 \033[0m'
+}
+AutoScript
